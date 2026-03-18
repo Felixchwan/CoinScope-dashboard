@@ -1,6 +1,6 @@
 async function getMarketData() {
   const response = await fetch(
-    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true",
+    "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true",
     {
       cache: "no-store",
     }
@@ -42,6 +42,7 @@ function PriceCard({ name, symbol, price, change }) {
 
 export default async function Home() {
   const data = await getMarketData();
+  const lastUpdated = new Date().toLocaleTimeString();
 
   return (
     <main className="min-h-screen bg-[#07110c] text-[#e6f3ea] px-6 py-12">
@@ -54,9 +55,12 @@ export default async function Home() {
           <p className="mt-2 text-[#8fb39a]">
             Live crypto prices rendered with Next.js server-side fetching.
           </p>
+          <p className="mt-2 text-sm text-[#6e8f7a]">
+            Last updated: {lastUpdated}
+          </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <PriceCard
             name="Bitcoin"
             symbol="BTC"
@@ -68,6 +72,12 @@ export default async function Home() {
             symbol="ETH"
             price={data.ethereum.usd}
             change={data.ethereum.usd_24h_change}
+          />
+          <PriceCard
+            name="Solana"
+            symbol="SOL"
+            price={data.solana.usd}
+            change={data.solana.usd_24h_change}
           />
         </div>
       </section>
