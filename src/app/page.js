@@ -34,7 +34,7 @@ function PriceCard({ name, symbol, price, change }) {
           positive ? "text-green-400" : "text-red-400"
         }`}
       >
-        {change.toFixed(2)}%
+        {positive ? "+" : ""}{change.toFixed(2)}%
       </p>
     </div>
   );
@@ -42,7 +42,11 @@ function PriceCard({ name, symbol, price, change }) {
 
 export default async function Home() {
   const data = await getMarketData();
-  const lastUpdated = new Date().toLocaleTimeString();
+
+  const lastUpdated = new Date().toLocaleTimeString([], {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 
   return (
     <main className="min-h-screen bg-[#07110c] text-[#e6f3ea] px-6 py-12">
