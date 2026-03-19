@@ -57,7 +57,7 @@ export default async function Home() {
           </p>
           <h1 className="mt-3 text-4xl font-bold">Crypto Market Overview</h1>
           <p className="mt-2 text-[#8fb39a]">
-            Live crypto prices rendered with Next.js server-side fetching.
+            Live crypto prices powered by Next.js server-side fetching.
           </p>
           <p className="mt-2 text-sm text-[#6e8f7a]">
             Last updated: {lastUpdated}
