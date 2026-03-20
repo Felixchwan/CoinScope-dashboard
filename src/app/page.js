@@ -1,3 +1,5 @@
+import PriceChart from "./components/PriceChart";
+
 async function getMarketData() {
   const response = await fetch(
     "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana&vs_currencies=usd&include_24hr_change=true",
@@ -43,6 +45,29 @@ function PriceCard({ name, symbol, price, change }) {
 export default async function Home() {
   const data = await getMarketData();
 
+const marketData = [
+  {
+    name: "Bitcoin",
+    symbol: "BTC",
+    price: data.bitcoin.usd,
+    change: data.bitcoin.usd_24h_change,
+  },
+  {
+    name: "Ethereum",
+    symbol: "ETH",
+    price: data.ethereum.usd,
+    change: data.ethereum.usd_24h_change,
+  },
+  {
+    name: "Solana",
+    symbol: "SOL",
+    price: data.solana.usd,
+    change: data.solana.usd_24h_change,
+  },
+];
+
+// console.log("Market Data:", marketData);
+
   const lastUpdated = new Date().toLocaleTimeString([], {
     hour: "numeric",
     minute: "2-digit",
@@ -65,25 +90,18 @@ export default async function Home() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <PriceCard
-            name="Bitcoin"
-            symbol="BTC"
-            price={data.bitcoin.usd}
-            change={data.bitcoin.usd_24h_change}
-          />
-          <PriceCard
-            name="Ethereum"
-            symbol="ETH"
-            price={data.ethereum.usd}
-            change={data.ethereum.usd_24h_change}
-          />
-          <PriceCard
-            name="Solana"
-            symbol="SOL"
-            price={data.solana.usd}
-            change={data.solana.usd_24h_change}
-          />
-        </div>
+      {marketData.map((coin) => (
+      <PriceCard
+      key={coin.symbol}
+      name={coin.name}
+      symbol={coin.symbol}
+      price={coin.price}
+      change={coin.change}
+      />
+      ))}
+      </div>
+
+      <PriceChart data={marketData} />
       </section>
     </main>
   );
