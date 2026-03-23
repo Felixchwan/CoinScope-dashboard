@@ -45,28 +45,30 @@ function PriceCard({ name, symbol, price, change }) {
 export default async function Home() {
   const data = await getMarketData();
 
-const marketData = [
-  {
-    name: "Bitcoin",
-    symbol: "BTC",
-    price: data.bitcoin.usd,
-    change: data.bitcoin.usd_24h_change,
-  },
-  {
-    name: "Ethereum",
-    symbol: "ETH",
-    price: data.ethereum.usd,
-    change: data.ethereum.usd_24h_change,
-  },
-  {
-    name: "Solana",
-    symbol: "SOL",
-    price: data.solana.usd,
-    change: data.solana.usd_24h_change,
-  },
-];
+  const marketData = [
+    {
+      name: "Bitcoin",
+      symbol: "BTC",
+      price: data.bitcoin.usd,
+      change: data.bitcoin.usd_24h_change,
+    },
+    {
+      name: "Ethereum",
+      symbol: "ETH",
+      price: data.ethereum.usd,
+      change: data.ethereum.usd_24h_change,
+    },
+    {
+      name: "Solana",
+      symbol: "SOL",
+      price: data.solana.usd,
+      change: data.solana.usd_24h_change,
+    },
+  ];
 
-// console.log("Market Data:", marketData);
+  const topPerformer = marketData.reduce((best, coin) => {
+    return coin.change > best.change ? coin : best;
+  }, marketData[0]);
 
   const lastUpdated = new Date().toLocaleTimeString([], {
     hour: "numeric",
@@ -89,19 +91,29 @@ const marketData = [
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {marketData.map((coin) => (
-      <PriceCard
-      key={coin.symbol}
-      name={coin.name}
-      symbol={coin.symbol}
-      price={coin.price}
-      change={coin.change}
-      />
-      ))}
-      </div>
+        <div className="mb-6 rounded-xl border border-[#1f3a2c] bg-[#102118] p-4">
+          <p className="text-xs text-green-400 mt-1">
+          Best performer today
+          </p>
+          <p className="mt-1 text-xl font-bold">
+            {topPerformer.name} ({topPerformer.symbol}) — {topPerformer.change >= 0 ? "+" : ""}
+            {topPerformer.change.toFixed(2)}%
+          </p>
+        </div>
 
-      <PriceChart data={marketData} />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {marketData.map((coin) => (
+            <PriceCard
+              key={coin.symbol}
+              name={coin.name}
+              symbol={coin.symbol}
+              price={coin.price}
+              change={coin.change}
+            />
+          ))}
+        </div>
+
+        <PriceChart data={marketData} />
       </section>
     </main>
   );
