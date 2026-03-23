@@ -66,9 +66,8 @@ export default async function Home() {
     },
   ];
 
-  const topPerformer = marketData.reduce((best, coin) => {
-    return coin.change > best.change ? coin : best;
-  }, marketData[0]);
+  const sortedMarketData = [...marketData].sort((a, b) => b.change - a.change);
+  const topPerformer = sortedMarketData[0];
 
   const lastUpdated = new Date().toLocaleTimeString([], {
     hour: "numeric",
@@ -102,7 +101,7 @@ export default async function Home() {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {marketData.map((coin) => (
+          {sortedMarketData.map((coin) => (
             <PriceCard
               key={coin.symbol}
               name={coin.name}
@@ -113,7 +112,7 @@ export default async function Home() {
           ))}
         </div>
 
-        <PriceChart data={marketData} />
+        <PriceChart data={sortedMarketData} />
       </section>
     </main>
   );
