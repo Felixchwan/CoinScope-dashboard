@@ -68,6 +68,8 @@ export default async function Home() {
 
   const sortedMarketData = [...marketData].sort((a, b) => b.change - a.change);
   const topPerformer = sortedMarketData[0];
+  const worstPerformer = sortedMarketData[sortedMarketData.length - 1];
+  const spread = topPerformer.change - worstPerformer.change;
 
   const lastUpdated = new Date().toLocaleTimeString([], {
     hour: "numeric",
@@ -98,6 +100,16 @@ export default async function Home() {
             {topPerformer.name} ({topPerformer.symbol}) — {topPerformer.change >= 0 ? "+" : ""}
             {topPerformer.change.toFixed(2)}%
           </p>
+        </div>
+
+        <div className="mb-6 rounded-xl border border-[#1f3a2c] bg-[#102118] p-4">
+        <p className="text-sm text-[#8fb39a]">Market Spread (24h)</p>
+        <p className="mt-1 text-xl font-bold">
+        {spread.toFixed(2)}% difference between top and worst performer
+        </p>
+        <p className="mt-1 text-sm text-[#8fb39a]">
+        Worst: {worstPerformer.name} ({worstPerformer.symbol})
+        </p>
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
